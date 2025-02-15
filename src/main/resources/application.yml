@@ -1,1 +1,36 @@
-spring.application.name=tabletennis
+server:
+  port: 8080
+
+spring:
+  datasource:
+#    url: jdbc:h2:mem:tabletennis
+    url: jdbc:h2:~/tabletennis
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        show_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+  server:
+    base-path: /
