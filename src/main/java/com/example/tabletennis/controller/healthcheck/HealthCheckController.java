@@ -1,4 +1,4 @@
-package com.example.tabletennis.controller;
+package com.example.tabletennis.controller.healthcheck;
 
 
 import com.example.tabletennis.common.dto.ApiResponse;
