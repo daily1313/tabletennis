@@ -30,18 +30,18 @@ public class User extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private User(Integer fakerId, String name, String email, Status status) {
+    private User(Integer fakerId, String name, String email) {
         this.fakerId = fakerId;
         this.name = name;
         this.email = email;
         this.status = determineStatus(fakerId);
     }
 
-    private static User of(Integer fakerId, String name, String email, Status status) {
-        return new User(fakerId, name, email, status);
+    public static User of(Integer fakerId, String name, String email) {
+        return new User(fakerId, name, email);
     }
 
-    private Status determineStatus(int fakerId) {
+    public static Status determineStatus(int fakerId) {
         return switch ((fakerId - 1) / 30) {
             case 0 -> Status.ACTIVE;
             case 1 -> Status.WAIT;

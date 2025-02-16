@@ -25,7 +25,7 @@ public class Room extends AuditableEntity {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "host_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User host;
 

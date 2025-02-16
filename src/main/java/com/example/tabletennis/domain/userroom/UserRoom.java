@@ -26,7 +26,7 @@ public class UserRoom {
     private Room room;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "host_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
