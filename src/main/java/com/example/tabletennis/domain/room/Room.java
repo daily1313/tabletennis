@@ -34,4 +34,15 @@ public class Room extends AuditableEntity {
 
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
+
+    private Room(String title, User host, RoomType roomType) {
+        this.title = title;
+        this.host = host;
+        this.roomType = roomType;
+        this.status = RoomStatus.WAIT;
+    }
+
+    public static Room of(String title, User host, RoomType roomType) {
+        return new Room(title, host, roomType);
+    }
 }

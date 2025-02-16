@@ -20,5 +20,5 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
 
     @Query("SELECT new com.example.tabletennis.dto.response.room.RoomResponse" +
             "(r.id, r.title, r.host.id, r.roomType, r.status, r.createdAt, r.updatedAt) FROM Room r")
-    Page<RoomResponse> findAllRoomsWithHostId(Pageable pageable);
+    Page<RoomResponse> findAllRooms(Pageable pageable);
 }
