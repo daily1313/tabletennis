@@ -48,4 +48,8 @@ public class User extends AuditableEntity {
             default -> Status.NON_ACTIVE;
         };
     }
+
+    public boolean isActive() {
+        return status == Status.ACTIVE;
+    }
 }

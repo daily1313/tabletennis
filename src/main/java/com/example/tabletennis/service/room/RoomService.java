@@ -27,17 +27,12 @@ public class RoomService {
         User host = userRepository.findById(roomCreateRequest.userId())
                 .orElseThrow(() -> new IllegalArgumentException());
 
-        if(!isActivatedUser(host)) {
+        if(!host.isActive()) {
             throw new IllegalArgumentException();
         }
 
         Room room = Room.of(roomCreateRequest.title(), host, roomCreateRequest.roomType());
-
         roomRepository.save(room);
-    }
-
-    private boolean isActivatedUser(User user) {
-        return user.getStatus().value().equals("ACTIVE");
     }
 
     @Transactional(readOnly = true)
