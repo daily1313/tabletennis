@@ -26,7 +26,7 @@ public class UserService {
 
     @Transactional
     public void init(UserInitRequest userInitRequest) {
-        userRepository.deleteAll();
+        userRepository.deleteAllInBatch();
 
         FakerApiUserResponse fakerApiUserResponse = fakerApiService.initUsers(userInitRequest);
 
