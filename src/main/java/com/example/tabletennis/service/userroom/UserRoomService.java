@@ -91,22 +91,30 @@ public class UserRoomService {
         Room foundRoom = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException());
 
-        if(!foundRoom.isHost(foundUser) || !foundRoom.isWaiting()) {
-            throw new IllegalArgumentException();
-        }
-
-        long currentRoomCount = userRoomRepository.countByRoom(foundRoom);
-        int maxCapacity = foundRoom.getMaxCapacity();
-
-        if(currentRoomCount < maxCapacity) {
-            throw new IllegalArgumentException();
-        }
+        validateGameStartConditions(foundRoom, foundUser);
 
         foundRoom.startGame();
         roomRepository.save(foundRoom);
 
         taskScheduler.schedule(() -> finishGame(roomId),
                 Instant.now().plusSeconds(60));
+    }
+
+    private void validateGameStartConditions(Room room, User user) {
+        if (!room.isHost(user)) {
+            throw new IllegalStateException();
+        }
+
+        if (!room.isWaiting()) {
+            throw new IllegalStateException();
+        }
+
+        long currentRoomCount = userRoomRepository.countByRoom(room);
+        int maxCapacity = room.getMaxCapacity();
+
+        if (currentRoomCount < maxCapacity) {
+            throw new IllegalStateException();
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
