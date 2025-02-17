@@ -34,7 +34,7 @@ public class RoomController {
     public ApiResponse<Page<RoomResponse>> getAllRooms(@RequestParam(defaultValue = "10") int size,
                                                        @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
-        Page<RoomResponse> foundAllRooms = roomService.findAllRooms(pageable);
+        Page<RoomResponse> foundAllRooms = roomService.findAllRoomsWithPagination(pageable);
         return ApiResponse.success(foundAllRooms);
     }
 }

@@ -43,7 +43,7 @@ public class RoomService {
 
 
     @Transactional(readOnly = true)
-    public Page<RoomResponse> findAllRooms(Pageable pageable) {
-        return roomRepository.findAllRooms(pageable);
+    public Page<RoomResponse> findAllRoomsWithPagination(Pageable pageable) {
+        return roomRepository.findAllRoomsWithPagination(pageable);
     }
 }

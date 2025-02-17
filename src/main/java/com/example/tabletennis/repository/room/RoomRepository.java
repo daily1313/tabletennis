@@ -13,12 +13,15 @@ import java.util.Optional;
 public interface RoomRepository extends JpaRepository<Room, Integer> {
 
     @Query("SELECT new com.example.tabletennis.dto.response.room.RoomResponse" +
-            "(r.id, r.title, r.host.id, r.roomType, r.status, r.createdAt, r.updatedAt) FROM Room r " +
+            "(r.id, r.title, h.id, r.roomType, r.status, r.createdAt, r.updatedAt) FROM Room r " +
+            "join r.host h " +
             "where r.id =: roomId"
     )
     Optional<RoomResponse> findRoomByRoomId(@Param("roomId") Integer roomId);
 
     @Query("SELECT new com.example.tabletennis.dto.response.room.RoomResponse" +
-            "(r.id, r.title, r.host.id, r.roomType, r.status, r.createdAt, r.updatedAt) FROM Room r")
-    Page<RoomResponse> findAllRooms(Pageable pageable);
+            "(r.id, r.title, h.id, r.roomType, r.status, r.createdAt, r.updatedAt) FROM Room r " +
+            "join r.host h "
+    )
+    Page<RoomResponse> findAllRoomsWithPagination(Pageable pageable);
 }

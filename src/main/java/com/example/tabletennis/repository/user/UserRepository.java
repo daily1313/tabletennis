@@ -12,5 +12,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT new com.example.tabletennis.dto.response.user.UserResponse" +
             "(u.id, u.fakerId, u.name, u.email, u.status, u.createdAt, u.updatedAt) " +
             "FROM User u")
-    Page<UserResponse> findAllUsers(Pageable pageable);
+    Page<UserResponse> findAllUsersWithPagination(Pageable pageable);
 }

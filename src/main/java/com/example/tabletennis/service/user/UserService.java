@@ -30,19 +30,17 @@ public class UserService {
 
         FakerApiUserResponse fakerApiUserResponse = fakerApiService.initUsers(userInitRequest);
 
-        if(fakerApiUserResponse != null) {
-            List<User> initializedUsers = fakerApiUserResponse.data().stream()
+        List<User> initializedUsers = fakerApiUserResponse.data().stream()
                     .sorted(Comparator.comparingInt(FakerUser::id))
                     .map(FakerUser::toUser)
                     .collect(Collectors.toList());
 
-            userRepository.saveAll(initializedUsers);
-        }
+        userRepository.saveAll(initializedUsers);
     }
 
     @Transactional(readOnly = true)
     public PaginatedUserListResponse getAllUsers(Pageable pageable) {
-        Page<UserResponse> foundUsers = userRepository.findAllUsers(pageable);
+        Page<UserResponse> foundUsers = userRepository.findAllUsersWithPagination(pageable);
 
         PaginatedUserListResponse allUsers = PaginatedUserListResponse.of(
                 foundUsers.getTotalElements(), foundUsers.getTotalPages(), foundUsers.getContent());
