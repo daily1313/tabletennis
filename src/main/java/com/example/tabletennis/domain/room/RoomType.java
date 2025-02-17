@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum RoomType {
 
-    SINGLE("SINGLE"),
-    DOUBLE("DOUBLE");
+    SINGLE("단식"),
+    DOUBLE("복식");
 
     private final String value;
 

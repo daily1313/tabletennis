@@ -46,4 +46,36 @@ public class Room extends AuditableEntity {
     public static Room of(String title, User host, RoomType roomType) {
         return new Room(title, host, roomType);
     }
+
+    public boolean isWaiting() {
+        return status == RoomStatus.WAIT;
+    }
+
+    public boolean isHost(User user) {
+        return this.host.getId().equals(user.getId());
+    }
+
+    public void startGame() {
+        this.status = RoomStatus.PROGRESS;
+    }
+
+    public boolean isInProgress() {
+        return this.status == RoomStatus.PROGRESS;
+    }
+
+    public boolean isFinished() {
+        return this.status == RoomStatus.PROGRESS;
+    }
+
+    public void finishGame() {
+        this.status = RoomStatus.FINISH;
+    }
+
+    public int getMaxCapacity() {
+        return (this.roomType == RoomType.SINGLE) ? 2 : 4;
+    }
+
+    public int getMaxTeamCapacity() {
+        return (this.roomType == RoomType.SINGLE) ? 1 : 2;
+    }
 }

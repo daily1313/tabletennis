@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Random;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,4 +35,22 @@ public class UserRoom {
 
     @Enumerated(EnumType.STRING)
     private Team team;
+
+    private UserRoom(User user, Room room) {
+        this.user = user;
+        this.room = room;
+        this.team = assignRandomTeam();
+    }
+
+    public static UserRoom of(User user, Room room) {
+        return new UserRoom(user, room);
+    }
+
+    private Team assignRandomTeam() {
+        return new Random().nextBoolean() ? Team.RED : Team.BLUE;
+    }
+
+    public void changeTeam(Team newTeam) {
+        this.team = newTeam;
+    }
 }

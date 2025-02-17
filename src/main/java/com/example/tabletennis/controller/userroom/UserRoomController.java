@@ -1,0 +1,50 @@
+package com.example.tabletennis.controller.userroom;
+
+import com.example.tabletennis.common.dto.ApiResponse;
+import com.example.tabletennis.dto.request.userroom.GameStartRequest;
+import com.example.tabletennis.dto.request.userroom.RoomJoinRequest;
+import com.example.tabletennis.dto.request.userroom.RoomLeaveRequest;
+import com.example.tabletennis.dto.request.userroom.TeamChangeRequest;
+import com.example.tabletennis.service.userroom.UserRoomService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+@RequestMapping("/room")
+@RequiredArgsConstructor
+@RestController
+public class UserRoomController {
+
+    private final UserRoomService userRoomService;
+
+    @PostMapping("/attention/{roomId}")
+    public ApiResponse<Void> joinRoom(@PathVariable("roomId") Integer roomId,
+                                      @RequestBody RoomJoinRequest roomJoinRequest) {
+        userRoomService.joinRoom(roomId, roomJoinRequest);
+
+        return ApiResponse.success();
+    }
+
+    @PostMapping("/out/{roomId}")
+    public ApiResponse<Void> leaveRoom(@PathVariable("roomId") Integer roomId,
+                                       @RequestBody RoomLeaveRequest roomLeaveRequest) {
+        userRoomService.leaveRoom(roomId, roomLeaveRequest);
+
+        return ApiResponse.success();
+    }
+
+    @PutMapping("/start/{roomId}")
+    public ApiResponse<Void> startGame(@PathVariable("roomId") Integer roomId,
+                                       @RequestBody GameStartRequest gameStartRequest) {
+        userRoomService.startGame(roomId, gameStartRequest);
+
+        return ApiResponse.success();
+    }
+
+    @PutMapping("/team/{roomId}")
+    public ApiResponse<Void> changeTeam(@PathVariable("roomId") Integer roomId,
+                                        @RequestBody TeamChangeRequest teamChangeRequest) {
+        userRoomService.changeTeam(roomId, teamChangeRequest);
+
+        return ApiResponse.success();
+    }
+}

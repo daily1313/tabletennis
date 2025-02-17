@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum RoomStatus {
 
-    WAIT("WAIT"),
-    ACTIVE("ACTIVE"),
-    NON_ACTIVE("NON_ACTIVE");
+    WAIT("대기"),
+    PROGRESS("진행중"),
+    FINISH("완료");
 
     private final String value;
 

@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Status {
 
-    WAIT("WAIT"),
-    ACTIVE("ACTIVE"),
-    NON_ACTIVE("NON_ACTIVE");
+    WAIT("대기"),
+    ACTIVE("활성"),
+    NON_ACTIVE("비활성");
 
     private final String value;
 

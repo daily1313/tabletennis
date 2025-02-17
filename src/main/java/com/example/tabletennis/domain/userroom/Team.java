@@ -17,4 +17,8 @@ public enum Team {
     public String getValue() {
         return value;
     }
+
+    public Team getOppositeTeam() {
+        return (this == RED) ? BLUE : RED;
+    }
 }
