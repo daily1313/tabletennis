@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "room")
 @Entity
 public class Room extends AuditableEntity {
 

@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "user_room")
 @Entity
 public class UserRoom {
 
