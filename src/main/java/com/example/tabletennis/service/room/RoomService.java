@@ -37,7 +37,7 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<RoomResponse> findByRoomId(Integer roomId) {
+    public RoomResponse findByRoomId(Integer roomId) {
         return roomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException());
     }
