@@ -3,6 +3,7 @@ package com.example.tabletennis.service.room;
 import com.example.tabletennis.domain.room.Room;
 import com.example.tabletennis.domain.user.User;
 import com.example.tabletennis.dto.request.room.RoomCreateRequest;
+import com.example.tabletennis.dto.response.room.PaginatedRoomListResponse;
 import com.example.tabletennis.dto.response.room.RoomResponse;
 import com.example.tabletennis.repository.room.RoomRepository;
 import com.example.tabletennis.repository.user.UserRepository;
@@ -36,14 +37,19 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public RoomResponse findByRoomId(Integer roomId) {
+    public Optional<RoomResponse> findByRoomId(Integer roomId) {
         return roomRepository.findRoomByRoomId(roomId)
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
 
     @Transactional(readOnly = true)
-    public Page<RoomResponse> findAllRoomsWithPagination(Pageable pageable) {
-        return roomRepository.findAllRoomsWithPagination(pageable);
+    public PaginatedRoomListResponse findAllRoomsWithPagination(Pageable pageable) {
+        Page<RoomResponse> foundRooms = roomRepository.findAllRoomsWithPagination(pageable);
+
+        PaginatedRoomListResponse allRooms = PaginatedRoomListResponse.of(
+                foundRooms.getTotalElements(), foundRooms.getTotalPages(), foundRooms.getContent());
+
+        return allRooms;
     }
 }

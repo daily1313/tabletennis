@@ -1,6 +1,7 @@
 package com.example.tabletennis.controller.user;
 
 import com.example.tabletennis.common.dto.ApiResponse;
+import com.example.tabletennis.controller.annotation.SwaggerApiResponse;
 import com.example.tabletennis.dto.request.user.UserInitRequest;
 import com.example.tabletennis.dto.response.user.PaginatedUserListResponse;
 import com.example.tabletennis.service.user.UserService;
@@ -17,6 +18,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @SwaggerApiResponse(summary = "초기화 API")
     @PostMapping("/init")
     public ApiResponse<Void> init(@RequestBody UserInitRequest userInitRequest) {
         userService.init(userInitRequest);
@@ -24,6 +26,7 @@ public class UserController {
         return ApiResponse.success();
     }
 
+    @SwaggerApiResponse(summary = "유저 전체 조회 API", implementation = PaginatedUserListResponse.class)
     @GetMapping("/user")
     public ApiResponse<PaginatedUserListResponse> getAllUsersWithPagination(
             @RequestParam(defaultValue = "10") int size,

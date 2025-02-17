@@ -15,7 +15,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     @Query("SELECT new com.example.tabletennis.dto.response.room.RoomResponse" +
             "(r.id, r.title, h.id, r.roomType, r.status, r.createdAt, r.updatedAt) FROM Room r " +
             "join r.host h " +
-            "where r.id =: roomId"
+            "where r.id =:roomId"
     )
     Optional<RoomResponse> findRoomByRoomId(@Param("roomId") Integer roomId);
 

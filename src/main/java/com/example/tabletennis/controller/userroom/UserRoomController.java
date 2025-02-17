@@ -1,6 +1,7 @@
 package com.example.tabletennis.controller.userroom;
 
 import com.example.tabletennis.common.dto.ApiResponse;
+import com.example.tabletennis.controller.annotation.SwaggerApiResponse;
 import com.example.tabletennis.dto.request.userroom.GameStartRequest;
 import com.example.tabletennis.dto.request.userroom.RoomJoinRequest;
 import com.example.tabletennis.dto.request.userroom.RoomLeaveRequest;
@@ -9,14 +10,15 @@ import com.example.tabletennis.service.userroom.UserRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/room")
+@RequestMapping
 @RequiredArgsConstructor
 @RestController
 public class UserRoomController {
 
     private final UserRoomService userRoomService;
 
-    @PostMapping("/attention/{roomId}")
+    @SwaggerApiResponse(summary = "방 참가 API")
+    @PostMapping("/room/attention/{roomId}")
     public ApiResponse<Void> joinRoom(@PathVariable("roomId") Integer roomId,
                                       @RequestBody RoomJoinRequest roomJoinRequest) {
         userRoomService.joinRoom(roomId, roomJoinRequest);
@@ -24,7 +26,8 @@ public class UserRoomController {
         return ApiResponse.success();
     }
 
-    @PostMapping("/out/{roomId}")
+    @SwaggerApiResponse(summary = "방 나가기 API")
+    @PostMapping("/room/out/{roomId}")
     public ApiResponse<Void> leaveRoom(@PathVariable("roomId") Integer roomId,
                                        @RequestBody RoomLeaveRequest roomLeaveRequest) {
         userRoomService.leaveRoom(roomId, roomLeaveRequest);
@@ -32,7 +35,8 @@ public class UserRoomController {
         return ApiResponse.success();
     }
 
-    @PutMapping("/start/{roomId}")
+    @SwaggerApiResponse(summary = "게임시작 API")
+    @PutMapping("/room/start/{roomId}")
     public ApiResponse<Void> startGame(@PathVariable("roomId") Integer roomId,
                                        @RequestBody GameStartRequest gameStartRequest) {
         userRoomService.startGame(roomId, gameStartRequest);
@@ -40,6 +44,7 @@ public class UserRoomController {
         return ApiResponse.success();
     }
 
+    @SwaggerApiResponse(summary = "팀 변경 API")
     @PutMapping("/team/{roomId}")
     public ApiResponse<Void> changeTeam(@PathVariable("roomId") Integer roomId,
                                         @RequestBody TeamChangeRequest teamChangeRequest) {

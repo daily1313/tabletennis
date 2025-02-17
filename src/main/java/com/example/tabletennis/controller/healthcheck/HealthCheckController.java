@@ -2,6 +2,7 @@ package com.example.tabletennis.controller.healthcheck;
 
 
 import com.example.tabletennis.common.dto.ApiResponse;
+import com.example.tabletennis.controller.annotation.SwaggerApiResponse;
 import com.example.tabletennis.monitoring.health.ApplicationHealthCheckIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class HealthCheckController {
         this.applicationHealthCheckIndicator = applicationHealthCheckIndicator;
     }
 
+    @SwaggerApiResponse(summary = "헬스체크 API")
     @GetMapping
     public ApiResponse<Void> getServerStatus() {
         if (isExecuted.compareAndSet(false, true)) {
