@@ -5,6 +5,7 @@ import com.example.tabletennis.controller.annotation.SwaggerApiResponse;
 import com.example.tabletennis.dto.request.user.UserInitRequest;
 import com.example.tabletennis.dto.response.user.PaginatedUserListResponse;
 import com.example.tabletennis.service.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ public class UserController {
 
     @SwaggerApiResponse(summary = "초기화 API")
     @PostMapping("/init")
-    public ApiResponse<Void> init(@RequestBody UserInitRequest userInitRequest) {
+    public ApiResponse<Void> init(@Valid @RequestBody UserInitRequest userInitRequest) {
         userService.init(userInitRequest);
 
         return ApiResponse.success();

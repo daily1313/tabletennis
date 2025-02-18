@@ -6,6 +6,7 @@ import com.example.tabletennis.dto.request.room.RoomCreateRequest;
 import com.example.tabletennis.dto.response.room.PaginatedRoomListResponse;
 import com.example.tabletennis.dto.response.room.RoomResponse;
 import com.example.tabletennis.service.room.RoomService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,7 @@ public class RoomController {
 
     @SwaggerApiResponse(summary = "방 생성 API")
     @PostMapping
-    public ApiResponse<Void> createRoom(@RequestBody RoomCreateRequest roomCreateRequest) {
+    public ApiResponse<Void> createRoom(@Valid @RequestBody RoomCreateRequest roomCreateRequest) {
         roomService.createRoom(roomCreateRequest);
         return ApiResponse.success();
     }
