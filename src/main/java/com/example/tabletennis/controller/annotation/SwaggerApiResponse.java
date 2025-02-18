@@ -19,11 +19,11 @@ import java.lang.annotation.Target;
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = ApiResponse.class))),
         @ApiResponse(responseCode = "201", description = "불가능한 요청입니다.",
-        content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = ApiResponse.class))),
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = ApiResponse.class))),
         @ApiResponse(responseCode = "500", description = "에러가 발생했습니다.",
-        content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = ApiResponse.class)))
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = ApiResponse.class)))
         })
 public @interface SwaggerApiResponse {
 

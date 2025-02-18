@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -21,11 +20,11 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> success(T result) {
-        return new ApiResponse<>(HttpStatus.OK.value(),  "API 요청이 성공했습니다.", result);
+        return new ApiResponse<>(200,  "API 요청이 성공했습니다.", result);
     }
 
     public static ApiResponse<Void> success() {
-        return new ApiResponse<Void>(HttpStatus.OK.value(), "API 요청이 성공했습니다.");
+        return new ApiResponse<Void>(200, "API 요청이 성공했습니다.");
     }
 
     public static ApiResponse<Void> fail() {
@@ -33,6 +32,6 @@ public class ApiResponse<T> {
     }
 
     public static ApiResponse<Void> error() {
-        return new ApiResponse<Void>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "에러가 발생했습니다.");
+        return new ApiResponse<Void>(500, "에러가 발생했습니다.");
     }
 }
