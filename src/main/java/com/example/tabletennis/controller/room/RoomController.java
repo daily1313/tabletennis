@@ -1,6 +1,6 @@
 package com.example.tabletennis.controller.room;
 
-import com.example.tabletennis.common.dto.ApiResponse;
+import com.example.tabletennis.dto.response.ApiResponse;
 import com.example.tabletennis.controller.annotation.SwaggerApiResponse;
 import com.example.tabletennis.dto.request.room.RoomCreateRequest;
 import com.example.tabletennis.dto.response.room.PaginatedRoomListResponse;
@@ -8,13 +8,10 @@ import com.example.tabletennis.dto.response.room.RoomResponse;
 import com.example.tabletennis.service.room.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RequestMapping("/room")
 @RequiredArgsConstructor

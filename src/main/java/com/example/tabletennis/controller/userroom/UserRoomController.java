@@ -1,6 +1,6 @@
 package com.example.tabletennis.controller.userroom;
 
-import com.example.tabletennis.common.dto.ApiResponse;
+import com.example.tabletennis.dto.response.ApiResponse;
 import com.example.tabletennis.controller.annotation.SwaggerApiResponse;
 import com.example.tabletennis.dto.request.userroom.GameStartRequest;
 import com.example.tabletennis.dto.request.userroom.RoomJoinRequest;

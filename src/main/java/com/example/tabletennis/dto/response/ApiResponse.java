@@ -1,4 +1,4 @@
-package com.example.tabletennis.common.dto;
+package com.example.tabletennis.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;

@@ -1,6 +1,5 @@
 package com.example.tabletennis.domain.room;
 
-import com.example.tabletennis.common.dto.ApiResponse;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 

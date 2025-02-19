@@ -1,6 +1,6 @@
 package com.example.tabletennis.handler;
 
-import com.example.tabletennis.common.dto.ApiResponse;
+import com.example.tabletennis.dto.response.ApiResponse;
 import com.example.tabletennis.exception.room.*;
 import com.example.tabletennis.exception.user.*;
 import com.example.tabletennis.exception.userroom.TeamFullException;
