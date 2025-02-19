@@ -64,7 +64,7 @@ public class Room extends AuditableEntity {
     }
 
     public boolean isFinished() {
-        return this.status == RoomStatus.PROGRESS;
+        return this.status == RoomStatus.FINISH;
     }
 
     public void finishGame() {
