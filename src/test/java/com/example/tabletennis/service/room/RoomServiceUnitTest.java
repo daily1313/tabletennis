@@ -98,7 +98,7 @@ public class RoomServiceUnitTest {
     }
 
     @Test
-    void 방_페이징_조회_테스트() {
+    void 모든_방을_페이징하여_조회한다() {
         // given
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
         paginatedRoomListResponse = new PageImpl<>(roomResponses, pageable, 10);
