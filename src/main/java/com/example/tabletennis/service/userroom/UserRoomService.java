@@ -152,7 +152,7 @@ public class UserRoomService {
         Team currentTeam = foundUserRoom.getTeam();
         Team newTeam = currentTeam.getOppositeTeam();
 
-        long currentTeamCount = userRoomRepository.countByUserAndTeam(foundUser, newTeam);
+        long currentTeamCount = userRoomRepository.countByRoomAndTeam(foundRoom, newTeam);
         int maxCapacity = foundRoom.getMaxTeamCapacity();
 
         if(currentTeamCount >= maxCapacity) {

@@ -19,7 +19,7 @@ public interface UserRoomRepository extends JpaRepository<UserRoom, Integer> {
 
     void deleteByRoom(Room room);
 
-    long countByUserAndTeam(User user, Team team);
+    long countByRoomAndTeam(Room room, Team team);
 
     List<UserRoom> findByRoom(Room room);
 }
