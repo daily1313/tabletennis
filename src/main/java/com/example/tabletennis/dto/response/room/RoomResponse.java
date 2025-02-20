@@ -1,5 +1,6 @@
 package com.example.tabletennis.dto.response.room;
 
+import com.example.tabletennis.domain.room.Room;
 import com.example.tabletennis.domain.room.RoomStatus;
 import com.example.tabletennis.domain.room.RoomType;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,4 +16,15 @@ public record RoomResponse(Integer id,
                            LocalDateTime createdAt,
                            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
                            LocalDateTime updatedAt) {
+    public static RoomResponse from(Room room) {
+        return new RoomResponse(
+                room.getId(),
+                room.getTitle(),
+                room.getHost().getId(),
+                room.getRoomType(),
+                room.getStatus(),
+                room.getCreatedAt(),
+                room.getUpdatedAt()
+        );
+    }
 }
