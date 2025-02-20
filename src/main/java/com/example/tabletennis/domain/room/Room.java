@@ -1,8 +1,12 @@
 package com.example.tabletennis.domain.room;
 
 import com.example.tabletennis.common.AuditableEntity;
-import com.example.tabletennis.domain.user.Status;
 import com.example.tabletennis.domain.user.User;
+import com.example.tabletennis.exception.room.CannotExitRoomException;
+import com.example.tabletennis.exception.room.RoomInNotWaitStateException;
+import com.example.tabletennis.exception.room.RoomNotProgressStateException;
+import com.example.tabletennis.exception.room.RoomWaitStateException;
+import com.example.tabletennis.exception.user.UserNotHostException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -47,16 +51,55 @@ public class Room extends AuditableEntity {
         return new Room(title, host, roomType);
     }
 
-    public boolean isWaiting() {
-        return status == RoomStatus.WAIT;
+    public void validateWaitState() {
+        if(!isWaiting()) {
+            throw new RoomWaitStateException();
+        }
+    }
+
+    public void validateProgressState() {
+        if(isWaiting()) {
+            throw new RoomInNotWaitStateException();
+        }
+
+        if(!isInProgress()) {
+            throw new RoomNotProgressStateException();
+        }
     }
 
     public boolean isHost(User user) {
-        return this.host.getId().equals(user.getId());
+        if(!this.host.getId().equals(user.getId())) {
+            return false;
+        }
+        return true;
+    }
+
+    public void validateRoomLeaveState() {
+        if(isInProgress() || isFinished()) {
+            throw new CannotExitRoomException();
+        }
     }
 
     public void startGame() {
+        validateWaitState();
         this.status = RoomStatus.PROGRESS;
+    }
+
+    public void finishGame() {
+        validateProgressState();
+        this.status = RoomStatus.FINISH;
+    }
+
+    public void changeFinishStatsByHost() {
+        this.status = RoomStatus.FINISH;
+    }
+
+    public int getMaxCapacity() {
+        return (this.roomType == RoomType.SINGLE) ? 2 : 4;
+    }
+
+    public int getMaxTeamCapacity() {
+        return (this.roomType == RoomType.SINGLE) ? 1 : 2;
     }
 
     public boolean isInProgress() {
@@ -67,15 +110,7 @@ public class Room extends AuditableEntity {
         return this.status == RoomStatus.FINISH;
     }
 
-    public void finishGame() {
-        this.status = RoomStatus.FINISH;
-    }
-
-    public int getMaxCapacity() {
-        return (this.roomType == RoomType.SINGLE) ? 2 : 4;
-    }
-
-    public int getMaxTeamCapacity() {
-        return (this.roomType == RoomType.SINGLE) ? 1 : 2;
+    public boolean isWaiting() {
+        return status == RoomStatus.WAIT;
     }
 }

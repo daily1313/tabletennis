@@ -6,6 +6,7 @@ import com.example.tabletennis.domain.userroom.Team;
 import com.example.tabletennis.domain.userroom.UserRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRoomRepository extends JpaRepository<UserRoom, Integer> {
@@ -19,4 +20,6 @@ public interface UserRoomRepository extends JpaRepository<UserRoom, Integer> {
     void deleteByRoom(Room room);
 
     long countByUserAndTeam(User user, Team team);
+
+    List<UserRoom> findByRoom(Room room);
 }

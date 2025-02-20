@@ -1,6 +1,8 @@
 package com.example.tabletennis.service.userroom;
 
 import com.example.tabletennis.domain.room.Room;
+import com.example.tabletennis.domain.room.RoomStatus;
+import com.example.tabletennis.domain.room.RoomType;
 import com.example.tabletennis.domain.user.User;
 import com.example.tabletennis.domain.userroom.Team;
 import com.example.tabletennis.domain.userroom.UserRoom;
@@ -9,11 +11,9 @@ import com.example.tabletennis.dto.request.userroom.RoomJoinRequest;
 import com.example.tabletennis.dto.request.userroom.RoomLeaveRequest;
 import com.example.tabletennis.dto.request.userroom.TeamChangeRequest;
 import com.example.tabletennis.exception.room.RoomFullException;
-import com.example.tabletennis.exception.room.RoomInNotWaitStateException;
 import com.example.tabletennis.exception.room.RoomNotFoundException;
 import com.example.tabletennis.exception.room.RoomNotFullException;
 import com.example.tabletennis.exception.user.UserAlreadyInRoomException;
-import com.example.tabletennis.exception.user.UserNotActiveException;
 import com.example.tabletennis.exception.user.UserNotFoundException;
 import com.example.tabletennis.exception.user.UserNotHostException;
 import com.example.tabletennis.exception.userroom.TeamFullException;
@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -44,21 +45,26 @@ public class UserRoomService {
 
         Room foundRoom = findRoom(roomId);
 
-        validateRoomJoinCondition(foundRoom, foundUser);
+        validateRoomJoinConditions(foundRoom, foundUser);
 
-        UserRoom userRoom = UserRoom.of(foundUser, foundRoom);
+        List<UserRoom> existingUserRooms = userRoomRepository.findByRoom(foundRoom);
+
+        UserRoom userRoom;
+
+        if(existingUserRooms.isEmpty()) {
+            userRoom = UserRoom.of(foundUser, foundRoom);
+        } else {
+            Team team = assignTeam(existingUserRooms, foundRoom.getRoomType());
+            userRoom = UserRoom.of(foundUser, foundRoom, team);
+        }
 
         userRoomRepository.save(userRoom);
     }
 
-    private void validateRoomJoinCondition(Room foundRoom, User foundUser) {
-        if(!foundRoom.isWaiting()) {
-            throw new RoomInNotWaitStateException();
-        }
+    private void validateRoomJoinConditions(Room foundRoom, User foundUser) {
+        foundRoom.validateWaitState();
 
-        if(!foundUser.isActive()) {
-            throw new UserNotActiveException();
-        }
+        foundUser.validateActiveUser();
 
         boolean isUserInRoom = userRoomRepository.existsByUser(foundUser);
 
@@ -80,9 +86,8 @@ public class UserRoomService {
 
         Room foundRoom = findRoom(roomId);
 
-        if(foundRoom.isInProgress() || foundRoom.isFinished()) {
-            throw new RoomInNotWaitStateException();
-        }
+        foundUser.validateActiveUser();
+        foundRoom.validateRoomLeaveState();
 
         UserRoom foundUserRoom = userRoomRepository.findByUserAndRoom(foundUser, foundRoom)
                 .orElseThrow(UserRoomNotFoundException::new);
@@ -93,14 +98,13 @@ public class UserRoomService {
         }
 
         userRoomRepository.deleteByRoom(foundRoom);
-        foundRoom.finishGame();
+        foundRoom.changeFinishStatsByHost();
         roomRepository.save(foundRoom);
     }
 
     @Transactional
     public void startGame(Integer roomId, GameStartRequest gameStartRequest) {
         User foundUser = findUser(gameStartRequest.userId());
-
         Room foundRoom = findRoom(roomId);
 
         validateGameStartConditions(foundRoom, foundUser);
@@ -117,9 +121,7 @@ public class UserRoomService {
             throw new UserNotHostException();
         }
 
-        if (!room.isWaiting()) {
-            throw new RoomInNotWaitStateException();
-        }
+        room.validateWaitState();
 
         long currentRoomCount = userRoomRepository.countByRoom(room);
         int maxCapacity = room.getMaxCapacity();
@@ -132,11 +134,8 @@ public class UserRoomService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void finishGame(Integer roomId) {
         Room foundRoom = findRoom(roomId);
-
-        if (foundRoom.isInProgress()) {
-            foundRoom.finishGame();
-            roomRepository.save(foundRoom);
-        }
+        foundRoom.finishGame();
+        roomRepository.save(foundRoom);
     }
 
     @Transactional
@@ -145,9 +144,7 @@ public class UserRoomService {
 
         Room foundRoom = findRoom(roomId);
 
-        if(!foundRoom.isWaiting()) {
-            throw new IllegalArgumentException();
-        }
+        foundRoom.validateWaitState();
 
         UserRoom foundUserRoom = userRoomRepository.findByUserAndRoom(foundUser, foundRoom)
                 .orElseThrow(UserRoomNotFoundException::new);
@@ -163,6 +160,24 @@ public class UserRoomService {
         }
 
         foundUserRoom.changeTeam(newTeam);
+    }
+
+    private Team assignTeam(List<UserRoom> existingUserRooms, RoomType type) {
+        long redCount = existingUserRooms.stream()
+                .filter(userRoom -> userRoom.getTeam() == Team.RED).count();
+
+        long blueCount = existingUserRooms.stream()
+                .filter(userRoom -> userRoom.getTeam() == Team.BLUE).count();
+
+        int maxTeamCapacity = (type == RoomType.SINGLE) ? 2 : 4;
+
+        if (redCount >= maxTeamCapacity) {
+            return Team.BLUE;
+        } else if (blueCount >= maxTeamCapacity) {
+            return Team.RED;
+        } else {
+            return (redCount > blueCount) ? Team.BLUE : Team.RED;
+        }
     }
 
     private Room findRoom(Integer roomId) {

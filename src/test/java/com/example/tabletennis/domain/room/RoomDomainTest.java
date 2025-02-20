@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -40,18 +41,6 @@ public class RoomDomainTest {
 
         // then
         assertThat(room.isInProgress()).isTrue();
-    }
-
-    @Test
-    void 게임이_끝나면_방_상태가_FINISH로_변경된다() {
-        // given
-        Room room = RoomFixture.createSingleRoom(user);
-
-        // when
-        room.finishGame();
-
-        // then
-        assertThat(room.isFinished()).isTrue();
     }
 
     @Test

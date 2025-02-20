@@ -1,6 +1,7 @@
 package com.example.tabletennis.domain.user;
 
 import com.example.tabletennis.common.AuditableEntity;
+import com.example.tabletennis.exception.user.UserNotActiveException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,10 @@ public class User extends AuditableEntity {
             case 1 -> Status.WAIT;
             default -> Status.NON_ACTIVE;
         };
+    }
+
+    public void validateActiveUser() {
+        if(!isActive()) throw new UserNotActiveException();
     }
 
     public boolean isActive() {

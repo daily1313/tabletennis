@@ -42,8 +42,18 @@ public class UserRoom {
         this.team = assignRandomTeam();
     }
 
+    private UserRoom(User user, Room room, Team team) {
+        this.user = user;
+        this.room = room;
+        this.team = team;
+    }
+
     public static UserRoom of(User user, Room room) {
         return new UserRoom(user, room);
+    }
+
+    public static UserRoom of(User user, Room room, Team team) {
+        return new UserRoom(user, room, team);
     }
 
     private Team assignRandomTeam() {
