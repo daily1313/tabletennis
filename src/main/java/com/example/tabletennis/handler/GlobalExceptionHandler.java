@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
                       , RoomNotFoundException.class, UserAlreadyInRoomException.class, UserNotActiveException.class
                       , UserNotInRoomException.class, TeamFullException.class, UserNotFoundException.class
                       , UserNotHostException.class, RoomNotFullException.class, RoomWaitStateException.class
-                      , UserRoomNotFoundException.class, RoomNotProgressStateException.class, RestApiConnectException.class})
+                      , UserRoomNotFoundException.class, RoomNotProgressStateException.class, RestApiRequestFailureException.class})
     public ApiResponse<Void> handleException(RuntimeException e) {
         return ApiResponse.fail();
     }
