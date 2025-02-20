@@ -2,10 +2,12 @@ package com.example.tabletennis.service.user;
 
 import com.example.tabletennis.dto.request.user.UserInitRequest;
 import com.example.tabletennis.dto.response.user.FakerApiUserResponse;
+import com.example.tabletennis.exception.user.RestApiConnectException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,13 +30,9 @@ public class FakerApiService {
         try {
             ResponseEntity<FakerApiUserResponse> response = restTemplate.getForEntity(uri, FakerApiUserResponse.class);
 
-            if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
-                throw new IllegalStateException();
-            }
-
             return response.getBody();
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RestApiConnectException();
         }
     }
 }
