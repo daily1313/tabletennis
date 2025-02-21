@@ -3,8 +3,8 @@ server:
 
 spring:
   datasource:
-#    url: jdbc:h2:mem:tabletennis
-    url: jdbc:h2:~/tabletennis
+    url: jdbc:h2:mem:tabletennis # in-memory
+#    url: jdbc:h2:~/tabletennis  # embedded-mode
     driver-class-name: org.h2.Driver
     username: sa
     password:
